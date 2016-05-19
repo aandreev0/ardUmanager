@@ -111,12 +111,12 @@
    // to read out the state of inPin_ faster, use 
    int inPinBit_ = 1 << inPin_;  // bit mask 
    
-   // pin connected to DIN of TLV5618
-   int dataPin = 3;
-   // pin connected to SCLK of TLV5618
-   int clockPin = 4;
-   // pin connected to CS of TLV5618
+   // DAC chip
    int latchPin = 5;
+   #include <Wire.h>
+   #include <Adafruit_MCP4725.h>
+   Adafruit_MCP4725 dac;
+   int dac_level = 0;
 
    const int SEQUENCELENGTH = 12;  // this should be good enough for everybody;)
    byte triggerPattern_[SEQUENCELENGTH] = {0,0,0,0,0,0,0,0,0,0,0,0};
@@ -132,15 +132,15 @@
    bool blankOnHigh_ = false;
    bool triggerMode_ = false;
    boolean triggerState_ = false;
- 
+   
+   int pin_states[] = {0,0,0,0,0,0}; // 6 pins 8-13 states
+   
  void setup() {
    // Higher speeds do not appear to be reliable
    Serial.begin(57600);
-  
    pinMode(inPin_, INPUT);
-   pinMode (dataPin, OUTPUT);
-   pinMode (clockPin, OUTPUT);
-   pinMode (latchPin, OUTPUT);
+   
+   
    pinMode(8, OUTPUT);
    pinMode(9, OUTPUT);
    pinMode(10, OUTPUT);
@@ -149,14 +149,26 @@
    pinMode(13, OUTPUT);
    
    // Set analogue pins as input:
-   DDRC = DDRC & B11000000;
+   //DDRC = DDRC & B11000000;
    // Turn on build-in pull-up resistors
    PORTC = PORTC | B00111111;
    
-   digitalWrite(latchPin, HIGH);   
+   digitalWrite(latchPin, HIGH);  
+  
+    dac.begin(0x62);
+    dac.setVoltage(dac_level, false);   
  }
  
  void loop() {
+   
+   if(digitalRead(inPin_) == HIGH){ // is trigger there?
+     dac.setVoltage(dac_level, false);
+     set_pins_outputs(true); // set pins to their respective states
+   }else{
+     dac.setVoltage(0, false);
+     set_pins_outputs(false); // set all pins to LOW
+   }
+   
    if (Serial.available() > 0) {
      int inByte = Serial.read();
      switch (inByte) {
@@ -355,19 +367,20 @@
          }
          break;
          
-       case 42:
+       case 42: // setting pin state
          if (waitForSerial(timeOut_)) {
-           int pin = Serial.read();
+           int pin = Serial.read(); // second byte read, pin is 8..13 int
            if (waitForSerial(timeOut_)) {
-             int state = Serial.read();
+             int state = Serial.read(); // third byte read
              Serial.write( byte(42));
              Serial.write( pin);
+             
              if (state == 0) {
-                digitalWrite(14+pin, LOW);
+                pin_states[pin-8] = LOW;
                 Serial.write( byte(0));
              }
              if (state == 1) {
-                digitalWrite(14+pin, HIGH);
+                pin_states[pin-8] = HIGH;
                 Serial.write( byte(1));
              }
            }
@@ -430,17 +443,12 @@ bool waitForSerial(unsigned long timeOut)
 // pins should be connected as described above
 void analogueOut(int channel, byte msb, byte lsb) 
 {
-  digitalWrite(latchPin, LOW);
-  msb &= B00001111;
-  if (channel == 0)
-     msb |= B10000000;
-  // Note that in all other cases, the data will be written to DAC B and BUFFER
-  shiftOut(dataPin, clockPin, MSBFIRST, msb);
-  shiftOut(dataPin, clockPin, MSBFIRST, lsb);
-  // The TLV5618 needs one more toggle of the clockPin:
-  digitalWrite(clockPin, HIGH);
-  digitalWrite(clockPin, LOW);
-  digitalWrite(latchPin, HIGH);
+  msb &= B00001111; 
+  // if (channel == 0)
+  msb |= B10000000; // sets 1st bit of msb to 1
+  dac_level = BitShiftCombine(msb,lsb);
+  
+ 
 }
 
 
@@ -477,6 +485,28 @@ void blankInverted()
 }   
 
 */
+ void set_pins_outputs(bool to_stored_val){
   
-
+  for(int pin_i=8;pin_i<14;pin_i++){
+    if(to_stored_val){
+      if(pin_states[pin_i-8]==1){
+        digitalWrite(pin_i, HIGH);
+      }else{
+        digitalWrite(pin_i, LOW);
+      }
+    }else{ // trigger is low => zero all pins
+      digitalWrite(pin_i, LOW);
+    }
+    
+  }// for
+ }
+ 
+ int BitShiftCombine( unsigned char x_high, unsigned char x_low){
+  // http://projectsfromtech.blogspot.com/2013/09/combine-2-bytes-into-int-on-arduino.html
+  int combined; 
+  combined = x_high;              //send x_high to rightmost 8 bits
+  combined = combined<<8;         //shift x_high over to leftmost 8 bits
+  combined |= x_low;                 //logical OR keeps x_high intact in combined and fills in                                                             //rightmost 8 bits
+  return combined;
+}
 
