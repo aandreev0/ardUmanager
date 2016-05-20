@@ -1,4 +1,9 @@
 /*
+ * 
+ *  Author: Andrey Andreev, Scott E. Fraser
+ *  University of Southern California
+ *  2016
+ * 
  * This goal of the application is to set the digital output on pins 8-13 
  * This can be accomplished in three ways.  First, a serial command can directly set
  * the digital output pattern.  Second, a series of patterns can be stored in the 
