@@ -37,11 +37,15 @@ Parts:
 See __Figure 1__ for schematics/soldering.
 
 Code for Arduino is based on code from uManager page
+
 https://micro-manager.org/wiki/Arduino#Arduino_Software
+
 https://valelab.ucsf.edu/svn/micromanager2/trunk/DeviceAdapters/Arduino/AOTFcontroller/AOTFcontroller.ino
 
 To burn firmware to Arduino, one should install Arduino software/IDE, install it (https://www.arduino.cc/en/Main/Software), open file from repo called umanager-firmwave.ino
+
 This file has to sit in synonymous folder (umanager-firmwave/umanager-firmwave.ino)
+
 Connect board, select proper board from menus Tools->Board and Tool->Port, and upload software to the board
 
 ## How to install Arduino board to work with uManager
@@ -57,7 +61,9 @@ __Figure 2__
 ## How to prepare and connect Hamamatsu camera
 Pick Trigger output from camera
 In uManager device properties you should have following setting: (__Figure 4__)
+
 ```* HamamatsuHam_DCAM-OUTPUT TRIGGER KIND [0] ==> EXPOSURE```
+
 ```* HamamatsuHam_DCAM-OUTPUT TRIGGER POLARITY [0] ==> POSITIVE```
 
 Number [0] is id of the trigger channel. Our camera has 3 trigger outputs, numbered 0...2
