@@ -32,13 +32,13 @@ Parts:
 * Arduino Uno
 * MCP4725 Breakout Board - 12-Bit DAC w/I2C Interface (soldering required) https://www.adafruit.com/product/935
 * Shield (soldering required) https://www.adafruit.com/product/196
-* BNC leads to connect devices together via coaxial cabling http://www.mouser.com/ProductDetail/Pomona-Electronics/4969/?qs=sGAEpiMZZMu…
+* BNC leads to connect devices together via coaxial cabling http://www.mouser.com/ProductDetail/Pomona-Electronics/4969/?qs=sGAEpiMZZMuYRc8VvBrIhhTUnUOvodOEa01vcrji9e0%3d
 
 See __Figure 1__ for schematics/soldering.
 
 Code for Arduino is based on code from uManager page
 https://micro-manager.org/wiki/Arduino#Arduino_Software
-https://valelab.ucsf.edu/svn/micromanager2/trunk/DeviceAdapters/Arduino/AOT…
+https://valelab.ucsf.edu/svn/micromanager2/trunk/DeviceAdapters/Arduino/AOTFcontroller/AOTFcontroller.ino
 
 To burn firmware to Arduino, one should install Arduino software/IDE, install it (https://www.arduino.cc/en/Main/Software), open file from repo called umanager-firmwave.ino
 This file has to sit in synonymous folder (umanager-firmwave/umanager-firmwave.ino)
@@ -47,32 +47,34 @@ Connect board, select proper board from menus Tools->Board and Tool->Port, and u
 ## How to install Arduino board to work with uManager
 __Figure 2__
 
-Connect card via build-in or through USB hub
-Add card using Hardware Configuration Wizard
-Find Arduino Hub, add device
-Click on "Scan" Let uManager find proper COM port (/dev/ttyxxx on *nix) to connect to Arduino
-Add all peripherals for Arduino-Hub
-Proceed with other devices, save config
+1. Connect card via build-in or through USB hub
+2. Add card using Hardware Configuration Wizard
+3. Find Arduino Hub, add device
+4. Click on "Scan" Let uManager find proper COM port (/dev/ttyxxx on *nix) to connect to Arduino
+5. Add all peripherals for Arduino-Hub
+6. Proceed with other devices, save config
 
 ## How to prepare and connect Hamamatsu camera
 Pick Trigger output from camera
 In uManager device properties you should have following setting: (__Figure 4__)
-HamamatsuHam_DCAM-OUTPUT TRIGGER KIND [0] ==> EXPOSURE
-HamamatsuHam_DCAM-OUTPUT TRIGGER POLARITY [0] ==> POSITIVE
+```* HamamatsuHam_DCAM-OUTPUT TRIGGER KIND [0] ==> EXPOSURE```
+```* HamamatsuHam_DCAM-OUTPUT TRIGGER POLARITY [0] ==> POSITIVE```
 
 Number [0] is id of the trigger channel. Our camera has 3 trigger outputs, numbered 0...2
 You only will use one of those for this Arduino.
 
 ## How to connect Camera, Pockels cell, and Arduino using BNC cables
 See __Figure 5__ for schematics
-Camera Trigger connects to Input marked "D2"
-Pockels cell Input connects to Arduino's output marked "DAC"
+
+1. Camera Trigger connects to Input marked "D2"
+2. Pockels cell Input connects to Arduino's output marked "DAC"
 
 ## How to setup proper Groups/Presets to control Arduino from uManager
 See __Figures 3__
-Click on "+" button near "group" in Configuration setting sub-window
-Check box that contains "Arduino-DAC1-voltage", add name to group (like "Pockels level")
-Set desirable level of 2P intensity from 0..5V range
+
+1. Click on "+" button near "group" in Configuration setting sub-window
+2. Check box that contains "Arduino-DAC1-voltage", add name to group (like "Pockels level")
+3. Set desirable level of 2P intensity from 0..5V range
 Be careful that 100% of 2P power will be produced by just 1V setting.
 
 One can also (additional to continuous settings) add several discreet levels for Pockels cell voltage using uManager "Presents"
