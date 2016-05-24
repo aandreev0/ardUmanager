@@ -34,7 +34,7 @@ Parts:
 * Shield (soldering required) https://www.adafruit.com/product/196
 * BNC leads to connect devices together via coaxial cabling http://www.mouser.com/ProductDetail/Pomona-Electronics/4969/?qs=sGAEpiMZZMu…
 
-See Figure 1 for schematics/soldering.
+See __Figure 1__ for schematics/soldering.
 
 Code for Arduino is based on code from uManager page
 https://micro-manager.org/wiki/Arduino#Arduino_Software
@@ -45,7 +45,7 @@ This file has to sit in synonymous folder (umanager-firmwave/umanager-firmwave.i
 Connect board, select proper board from menus Tools->Board and Tool->Port, and upload software to the board
 
 ## How to install Arduino board to work with uManager
-Figure 2
+__Figure 2__
 
 Connect card via build-in or through USB hub
 Add card using Hardware Configuration Wizard
@@ -56,7 +56,7 @@ Proceed with other devices, save config
 
 ## How to prepare and connect Hamamatsu camera
 Pick Trigger output from camera
-In uManager device properties you should have following setting: (Figure 4 )
+In uManager device properties you should have following setting: (__Figure 4__)
 HamamatsuHam_DCAM-OUTPUT TRIGGER KIND [0] ==> EXPOSURE
 HamamatsuHam_DCAM-OUTPUT TRIGGER POLARITY [0] ==> POSITIVE
 
@@ -64,12 +64,12 @@ Number [0] is id of the trigger channel. Our camera has 3 trigger outputs, numbe
 You only will use one of those for this Arduino.
 
 ## How to connect Camera, Pockels cell, and Arduino using BNC cables
-See Figure 5 for schematics
+See __Figure 5__ for schematics
 Camera Trigger connects to Input marked "D2"
 Pockels cell Input connects to Arduino's output marked "DAC"
 
 ## How to setup proper Groups/Presets to control Arduino from uManager
-See Figures 3
+See __Figures 3__
 Click on "+" button near "group" in Configuration setting sub-window
 Check box that contains "Arduino-DAC1-voltage", add name to group (like "Pockels level")
 Set desirable level of 2P intensity from 0..5V range
