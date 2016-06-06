@@ -1,4 +1,4 @@
-Authorship: Andrey Andreev, Scott E. Fraser
+Authorship: Andrey Andreev, Thai V.Truong, Scott E. Fraser
 aandreev@usc.edu
 
 Translational Imagign Center @ Univeristy of Southern California
@@ -11,9 +11,9 @@ Scope: 2P laser intensity control via Pockels cell voltage signal
 #Documentation (taken from SEF basecamp project)
 
 Test conditions:
-* uManager versions: 1.14, 2.0, ...
+* uManager versions: 1.14
 * Arduino Uno (US version)
-* Hamamatsu camera
+* Hamamatsu camera Orca
 
 ##Intro
 Arduino+uManager provides robust and cheap way to control analog outputs of the Arduino card.
@@ -40,7 +40,9 @@ Code for Arduino is based on code from uManager page
 https://micro-manager.org/wiki/Arduino#Arduino_Software
 https://valelab.ucsf.edu/svn/micromanager2/trunk/DeviceAdapters/Arduino/AOTFcontroller/AOTFcontroller.ino
 
-To burn firmware to Arduino, one should install Arduino software/IDE, install it (https://www.arduino.cc/en/Main/Software), open file from repo called umanager-firmwave.ino
+Download code from this repo, using branch "release". You can download all repo as ZIP file using link: https://github.com/aandreev0/ardUmanager/archive/release.zip
+
+To burn firmware to Arduino, one should install Arduino software/IDE (https://www.arduino.cc/en/Main/Software), open file from repo called umanager-firmwave.ino
 This file has to sit in synonymous folder (umanager-firmwave/umanager-firmwave.ino)
 Connect board, select proper board from menus Tools->Board and Tool->Port, and upload software to the board
 
